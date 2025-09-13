@@ -38,4 +38,9 @@ public class AuthorController {
         authorService.deleteAuthorById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<AuthorResponse> updateAuthorById(@PathVariable String id, @RequestBody AuthorRequest authorRequest){
+        return ResponseEntity.ok(authorService.updateAuthorById(id, authorRequest));
+    }
 }
