@@ -49,7 +49,7 @@ public class BookService {
         return bookRepository.findAll();
     }
 
-    public Optional getBookById(String id){
+    public Optional<Book> getBookById(String id){
         return bookRepository.findById(id);
     }
     public void deleteBookById(String id){
