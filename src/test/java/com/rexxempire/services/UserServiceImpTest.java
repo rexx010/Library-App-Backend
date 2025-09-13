@@ -70,4 +70,22 @@ public class UserServiceImpTest {
         assertEquals("dami@gmail.com", response.getEmail());
         assertEquals("ADMIN", response.getRole());
     }
+
+    @Test
+    public void addUser_userCantLoginWithTheSameEmail(){
+        UserRequest userRequest = new UserRequest();
+        userRequest.setEmail("dami@gmail.com");
+        userRequest.setPassword("09876");
+        userRequest.setUsername("dami");
+        userRequest.setRole("ADMIN");
+        userService.registerUser(userRequest);
+        assertEquals(1,userRepository.count());
+
+        UserRequest userRequest2 = new UserRequest();
+        userRequest2.setEmail("dami@gmail.com");
+        userRequest2.setPassword("1234");
+        userRequest2.setUsername("tobi");
+        userRequest2.setRole("USER");
+        assertThrows(RuntimeException.class, () -> userService.registerUser(userRequest2));
+    }
 }
