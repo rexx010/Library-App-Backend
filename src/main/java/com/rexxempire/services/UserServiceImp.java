@@ -1,20 +1,41 @@
 package com.rexxempire.services;
 
+import com.mongodb.lang.NonNull;
 import com.rexxempire.data.models.User;
 import com.rexxempire.data.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import com.rexxempire.dtos.requests.UserRequest;
 import com.rexxempire.dtos.responses.UserResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
+
+
 
 @Service
-public class UserServiceImp implements UserService{
+public class UserServiceImp implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+//    @Autowired
+//    private AuthenticationManager authenticationManager;
+
+    public UserServiceImp(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @NonNull
+    public UserDetails loadUserByUsername(@NonNull String email) throws UsernameNotFoundException{
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email : " + email));
+        return new UserService(user);
+    }
 
     public UserResponse registerUser(UserRequest userRequest) {
         if (userRepository.findByEmail(userRequest.getEmail()).isPresent()) {
@@ -33,13 +54,12 @@ public class UserServiceImp implements UserService{
         userResponse.setRole(savedUser.getRole());
         return  userResponse;
     }
-
-    @Override
-    public User validateUser(String email, String password) {
-        return userRepository.findByEmail(email)
-                .filter(user -> passwordEncoder.matches(password, user.getPassword()))
-                .orElse(null);
-
-    }
-
 }
+
+//    @Override
+//    public User validateUser(String email, String password) {
+//        return userRepository.findByEmail(email)
+//                .filter(user -> passwordEncoder.matches(password, user.getPassword()))
+//                .orElse(null);
+//
+//    }
