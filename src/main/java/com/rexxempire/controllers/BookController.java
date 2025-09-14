@@ -19,9 +19,9 @@ public class BookController {
     private BookService bookService;
 
     @PostMapping("/{authorId}")
-    public ResponseEntity<?> addBook(@RequestBody BookRequest bookRequest, @PathVariable String authorId, HttpSession session){
+    public ResponseEntity<?> addBook(@RequestBody BookRequest bookRequest, @PathVariable("authorId") String authorId, HttpSession session){
         String role = (String) session.getAttribute("role");
-        if(role == null || !role.equals("ADMIN")){
+        if(role == null || !role.equalsIgnoreCase("ADMIN")){
             return ResponseEntity.status(403).body("No access granted: Only ADMIN can add books");
         }
         return ResponseEntity.ok(bookService.addBook(authorId,bookRequest));
@@ -42,7 +42,7 @@ public class BookController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteBookById(@PathVariable String id, HttpSession session){
         String role = (String) session.getAttribute("role");
-        if(role == null || !role.equals("ADMIN")){
+        if(role == null || !role.equalsIgnoreCase("ADMIN")){
             return ResponseEntity.status(403).body("No access granted: Only ADMIN can add books");
         }
         bookService.deleteBookById(id);
