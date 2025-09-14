@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface BorrowBookRepository extends MongoRepository <BorrowBook, String>{
     Optional<BorrowBook> findByUserId(String userId);
     Optional<BorrowBook> findByUserIdAndBookIdAndStatus(String userId, String bookId, Status status);
+    Optional<BorrowBook> findFirstByUserIdAndBookIdAndStatus(String userId, String bookId, Status status);
 }
