@@ -5,11 +5,12 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Document
 @Data
-public class BookLoan {
+public class BorrowBook {
     @Id
     private String id;
     @DBRef
@@ -17,6 +18,6 @@ public class BookLoan {
     @DBRef
     private Book book;
     private LocalDateTime loanDate;
-    private LocalDateTime returnDate;
+    private LocalDate returnDate;
     private Status status;
 }
