@@ -61,10 +61,8 @@ public class AuthController {
 //    if (userOpt.isEmpty()) {
 //        return ResponseEntity.status(401).body("Invalid credentials");
 //    }
-//
 //    User user = userOpt.get();
 //    session.setAttribute("userId", user.getId());
 //    session.setAttribute("role", user.getRole());
-//
 //    return ResponseEntity.ok("Login successful");
 //}
