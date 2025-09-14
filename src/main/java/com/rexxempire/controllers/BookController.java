@@ -4,6 +4,8 @@ import com.rexxempire.data.models.Book;
 import com.rexxempire.dtos.requests.BookRequest;
 import com.rexxempire.dtos.responses.BookResponse;
 import com.rexxempire.services.BookService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +19,11 @@ public class BookController {
     private BookService bookService;
 
     @PostMapping("/{authorId}")
-    public ResponseEntity<BookResponse> addBook(@RequestBody BookRequest bookRequest, @PathVariable String authorId){
+    public ResponseEntity<?> addBook(@RequestBody BookRequest bookRequest, @PathVariable String authorId, HttpSession session){
+        String role = (String) session.getAttribute("role");
+        if(role == null || !role.equals("ADMIN")){
+            return ResponseEntity.status(403).body("No access granted: Only ADMIN can add books");
+        }
         return ResponseEntity.ok(bookService.addBook(authorId,bookRequest));
     }
 
@@ -34,7 +40,11 @@ public class BookController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBookById(@PathVariable String id){
+    public ResponseEntity<?> deleteBookById(@PathVariable String id, HttpSession session){
+        String role = (String) session.getAttribute("role");
+        if(role == null || !role.equals("ADMIN")){
+            return ResponseEntity.status(403).body("No access granted: Only ADMIN can add books");
+        }
         bookService.deleteBookById(id);
         return ResponseEntity.noContent().build();
     }
