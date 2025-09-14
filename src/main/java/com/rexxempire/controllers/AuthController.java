@@ -55,16 +55,16 @@ public class AuthController {
         return ResponseEntity.ok("Logged out successfully");
     }
 }
-//    public ResponseEntity<?> validateUser(@RequestBody UserRequest userRequest, HttpSession session) {
-//        User user = userService.validateUser(userRequest.getEmail(), userRequest.getPassword());
-//        if(user == null){
-//            return ResponseEntity.status(401).body("Wrong Details");
-//        }
-//        session.setAttribute("userId", user.getId());
-//        UserResponse userResponse = new UserResponse();
-//        userResponse.setId(user.getId());
-//        userResponse.setUsername(user.getUsername());
-//        userResponse.setEmail(user.getEmail());
-//        userResponse.setRole(user.getRole());
-//        return ResponseEntity.ok(userResponse);
+//@PostMapping("/login")
+//public ResponseEntity<?> login(@RequestBody LoginRequest request, HttpSession session) {
+//    Optional<User> userOpt = userService.login(request);
+//    if (userOpt.isEmpty()) {
+//        return ResponseEntity.status(401).body("Invalid credentials");
 //    }
+//
+//    User user = userOpt.get();
+//    session.setAttribute("userId", user.getId());
+//    session.setAttribute("role", user.getRole());
+//
+//    return ResponseEntity.ok("Login successful");
+//}
