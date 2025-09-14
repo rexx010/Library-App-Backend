@@ -1,40 +1,26 @@
 package com.rexxempire.services;
 
-import com.mongodb.lang.NonNull;
+
 import com.rexxempire.data.models.User;
 import com.rexxempire.data.repositories.UserRepository;
+import com.rexxempire.dtos.requests.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import com.rexxempire.dtos.requests.UserRequest;
 import com.rexxempire.dtos.responses.UserResponse;
-
+import java.util.Optional;
 
 
 @Service
-public class UserServiceImp implements UserDetailsService {
+public class UserServiceImp{
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-//    @Autowired
-//    private AuthenticationManager authenticationManager;
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public UserServiceImp(UserRepository userRepository) {
         this.userRepository = userRepository;
-    }
-
-    @NonNull
-    public UserDetails loadUserByUsername(@NonNull String email) throws UsernameNotFoundException{
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email : " + email));
-        return new UserService(user);
     }
 
     public UserResponse registerUser(UserRequest userRequest) {
@@ -54,11 +40,30 @@ public class UserServiceImp implements UserDetailsService {
         userResponse.setRole(savedUser.getRole());
         return  userResponse;
     }
+    public Optional<User> login(LoginRequest loginRequest) {
+        return userRepository.findByUsername(loginRequest.getUsername())
+                .filter(user -> passwordEncoder.matches(loginRequest.getPassword(), user.getPassword()));
+    }
+
+//    @NonNull
+//    public UserDetails loadUserByUsername(@NonNull String email) throws UsernameNotFoundException{
+//        return userRepository.findByUsername(email)
+//                .map(user -> new org.springframework.security.core.userdetails.User(
+//                        user.getEmail(),
+//                        user.getPassword(),
+//                        getAuthorities(user.getRole())
+//                ))
+//                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+//    }
+//
+//    private Collection<? extends GrantedAuthority> getAuthorities(String role) {
+//        return List.of(new SimpleGrantedAuthority(role));
+//    }
 }
 
 //    @Override
 //    public User validateUser(String email, String password) {
-//        return userRepository.findByEmail(email)
+//        return userRepository.findByUsername(email)
 //                .filter(user -> passwordEncoder.matches(password, user.getPassword()))
 //                .orElse(null);
 //
