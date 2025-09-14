@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class BorrowBookService {
@@ -26,6 +27,11 @@ public class BorrowBookService {
     public BorrowBook borrowBook(String userId, String bookId){
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+        Optional<BorrowBook> existingBorrow = borrowBookRepository
+                .findFirstByUserIdAndBookIdAndStatus(userId, bookId, Status.CHECKED_OUT);
+        if (existingBorrow.isPresent()) {
+            throw new RuntimeException("You already borrowed this book. Please return it before borrowing again.");
+        }
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new RuntimeException("Book not found"));
         if(book.getAvailableCopies() <= 0){
@@ -44,16 +50,15 @@ public class BorrowBookService {
     }
 
 
-    public BorrowBook returnBook(String userId, String bookId){
+    public BorrowBook returnBook(String userId, String bookId) {
         BorrowBook borrowBook = borrowBookRepository.findByUserIdAndBookIdAndStatus(userId, bookId, Status.CHECKED_OUT)
-                .orElseThrow(() -> new RuntimeException("Book is not checked out"));
+                .orElseThrow(() -> new IllegalArgumentException("No active borrow record found for this book and user"));
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new IllegalArgumentException("Book not found"));
         borrowBook.setStatus(Status.RETURNED);
         borrowBook.setReturnDate(LocalDate.now());
-
-        Book book = borrowBook.getBook();
         book.setAvailableCopies(book.getAvailableCopies() + 1);
         bookRepository.save(book);
-
         return borrowBookRepository.save(borrowBook);
     }
 }
