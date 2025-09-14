@@ -33,17 +33,17 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Book> getBookById(@PathVariable String id){
+    public ResponseEntity<Book> getBookById(@PathVariable("id") String id){
         return bookService.getBookById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteBookById(@PathVariable String id, HttpSession session){
+    public ResponseEntity<?> deleteBookById(@PathVariable("id") String id, HttpSession session){
         String role = (String) session.getAttribute("role");
         if(role == null || !role.equalsIgnoreCase("ADMIN")){
-            return ResponseEntity.status(403).body("No access granted: Only ADMIN can add books");
+            return ResponseEntity.status(403).body("No access granted: Only ADMIN can delete books");
         }
         bookService.deleteBookById(id);
         return ResponseEntity.noContent().build();
