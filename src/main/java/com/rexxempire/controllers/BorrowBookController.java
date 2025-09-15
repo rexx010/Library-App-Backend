@@ -23,6 +23,15 @@ public class BorrowBookController {
         return ResponseEntity.ok(borrowBook);
     }
 
+    @PostMapping("/borrowed")
+    public ResponseEntity<Iterable<BorrowBook>> viewBorrowedBookByUserId(HttpSession session){
+        String userId = (String) session.getAttribute("userId");
+        if(userId == null){
+            throw new RuntimeException("No user logged in");
+        }
+        return ResponseEntity.ok(borrowBookService.viewBorrowedBookByUserId(userId));
+    }
+
     @PostMapping("/{bookId}")
     public ResponseEntity<BorrowBook> returnBook(@PathVariable("bookId") String bookId, HttpSession session) {
         String userId = (String) session.getAttribute("userId");
