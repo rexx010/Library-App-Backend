@@ -1,7 +1,7 @@
 package com.rexxempire.controllers;
 
 import com.rexxempire.data.models.BorrowBook;
-import com.rexxempire.services.BorrowBookService;
+import com.rexxempire.services.BorrowBookServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/borrow-books")
 public class BorrowBookController {
     @Autowired
-    private BorrowBookService borrowBookService;
+    private BorrowBookServiceImpl borrowBookService;
 
     @GetMapping("/{bookId}")
     public ResponseEntity<?> borrowBook(@PathVariable("bookId") String bookId, HttpSession session){
@@ -31,7 +31,7 @@ public class BorrowBookController {
         }
         return ResponseEntity.ok(borrowBookService.viewBorrowedBookByUserId(userId));
     }
-
+    
     @PostMapping("/{bookId}")
     public ResponseEntity<BorrowBook> returnBook(@PathVariable("bookId") String bookId, HttpSession session) {
         String userId = (String) session.getAttribute("userId");
