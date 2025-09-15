@@ -2,8 +2,7 @@ package com.rexxempire.controllers;
 
 import com.rexxempire.data.models.Author;
 import com.rexxempire.dtos.requests.AuthorRequest;
-import com.rexxempire.dtos.responses.AuthorResponse;
-import com.rexxempire.services.AuthorService;
+import com.rexxempire.services.AuthorServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ import java.util.List;
 @RequestMapping("/api/authors")
 public class AuthorController {
     @Autowired
-    private AuthorService authorService;
+    private AuthorServiceImpl authorService;
 
     @PostMapping
     public ResponseEntity<?> createAuthorProfile(@Valid @RequestBody AuthorRequest authorRequest, HttpSession session){
