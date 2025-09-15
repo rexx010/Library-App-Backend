@@ -6,6 +6,7 @@ import com.rexxempire.dtos.responses.BookResponse;
 import com.rexxempire.services.BookService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class BookController {
     private BookService bookService;
 
     @PostMapping("/{authorId}")
-    public ResponseEntity<?> addBook(@RequestBody BookRequest bookRequest, @PathVariable("authorId") String authorId, HttpSession session){
+    public ResponseEntity<?> addBook(@Valid @RequestBody BookRequest bookRequest, @PathVariable("authorId") String authorId, HttpSession session){
         String role = (String) session.getAttribute("role");
         if(role == null || !role.equalsIgnoreCase("ADMIN")){
             return ResponseEntity.status(403).body("No access granted: Only ADMIN can add books");
