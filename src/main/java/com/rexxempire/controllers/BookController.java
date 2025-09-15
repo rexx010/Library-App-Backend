@@ -2,9 +2,7 @@ package com.rexxempire.controllers;
 
 import com.rexxempire.data.models.Book;
 import com.rexxempire.dtos.requests.BookRequest;
-import com.rexxempire.dtos.responses.BookResponse;
-import com.rexxempire.services.BookService;
-import jakarta.servlet.http.HttpServletRequest;
+import com.rexxempire.services.BookServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +15,7 @@ import java.util.List;
 @RequestMapping("/api/books")
 public class BookController {
     @Autowired
-    private BookService bookService;
+    private BookServiceImpl bookService;
 
     @PostMapping("/{authorId}")
     public ResponseEntity<?> addBook(@Valid @RequestBody BookRequest bookRequest, @PathVariable("authorId") String authorId, HttpSession session){
