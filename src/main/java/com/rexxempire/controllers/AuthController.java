@@ -52,3 +52,14 @@ public class AuthController {
         return ResponseEntity.ok("Logged out successfully");
     }
 }
+//@PostMapping("/login")
+//public ResponseEntity<?> login(@RequestBody LoginRequest request, HttpSession session) {
+//    Optional<User> userOpt = userService.login(request);
+//    if (userOpt.isEmpty()) {
+//        return ResponseEntity.status(401).body("Invalid credentials");
+//    }
+//    User user = userOpt.get();
+//    session.setAttribute("userId", user.getId());
+//    session.setAttribute("role", user.getRole());
+//    return ResponseEntity.ok("Login successful");
+//}
