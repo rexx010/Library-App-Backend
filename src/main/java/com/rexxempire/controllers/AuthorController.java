@@ -5,6 +5,7 @@ import com.rexxempire.dtos.requests.AuthorRequest;
 import com.rexxempire.dtos.responses.AuthorResponse;
 import com.rexxempire.services.AuthorService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class AuthorController {
     private AuthorService authorService;
 
     @PostMapping
-    public ResponseEntity<?> createAuthorProfile(@RequestBody AuthorRequest authorRequest, HttpSession session){
+    public ResponseEntity<?> createAuthorProfile(@Valid @RequestBody AuthorRequest authorRequest, HttpSession session){
         String role = (String) session.getAttribute("role");
         if(role == null || !role.equals("ADMIN")){
             return ResponseEntity.status(403).body("Access not granted: Only admins can create authors");
@@ -32,14 +33,14 @@ public class AuthorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Author> getAuthorById(@PathVariable String id){
+    public ResponseEntity<Author> getAuthorById(@PathVariable("id") String id){
         return authorService.getAuthorById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteAuthorById(@PathVariable String id, HttpSession session){
+    public ResponseEntity<?> deleteAuthorById(@PathVariable("id") String id, HttpSession session){
         String role = (String) session.getAttribute("role");
         if(role == null || !role.equalsIgnoreCase("ADMIN")){
             return ResponseEntity.status(403).body("Forbidden: Only admins can update authors");
@@ -49,7 +50,7 @@ public class AuthorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateAuthorById(@PathVariable String id, @RequestBody AuthorRequest authorRequest, HttpSession session){
+    public ResponseEntity<?> updateAuthorById(@PathVariable("id") String id, @Valid @RequestBody AuthorRequest authorRequest, HttpSession session){
         String role = (String) session.getAttribute("role");
         if(role == null || !role.equalsIgnoreCase("ADMIN")){
             return ResponseEntity.status(403).body("Forbidden: Only admins can update authors");
