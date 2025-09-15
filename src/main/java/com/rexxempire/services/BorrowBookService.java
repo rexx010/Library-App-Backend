@@ -7,11 +7,14 @@ import com.rexxempire.data.models.User;
 import com.rexxempire.data.repositories.BorrowBookRepository;
 import com.rexxempire.data.repositories.BookRepository;
 import com.rexxempire.data.repositories.UserRepository;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -47,6 +50,10 @@ public class BorrowBookService {
         book.setAvailableCopies(book.getAvailableCopies() - 1);
         bookRepository.save(book);
         return borrowBookRepository.save(borrowBook);
+    }
+
+    public List<BorrowBook> viewBorrowedBookByUserId(String userId){
+        return borrowBookRepository.findByUserId(userId);
     }
 
 
