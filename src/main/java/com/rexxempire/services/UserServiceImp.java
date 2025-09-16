@@ -28,6 +28,9 @@ public class UserServiceImp implements UserService{
         if (userRepository.findByEmail(userRequest.getEmail()).isPresent()) {
             throw new RuntimeException("Email already exists");
         }
+        if(userRepository.findByUsername(userRequest.getUsername()).isPresent()){
+            throw new RuntimeException("User with this username already exists");
+        }
         User user = new User();
         user.setUsername(userRequest.getUsername());
         user.setEmail(userRequest.getEmail());
