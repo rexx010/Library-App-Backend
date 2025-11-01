@@ -66,4 +66,8 @@ public class BorrowBookServiceImpl implements BorrowBookService{
         bookRepository.save(book);
         return borrowBookRepository.save(borrowBook);
     }
+
+    public void deleteBorrowRecord(String id){
+        borrowBookRepository.deleteById(id);
+    }
 }
