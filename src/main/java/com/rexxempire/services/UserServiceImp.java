@@ -41,7 +41,7 @@ public class UserServiceImp implements UserService{
         userResponse.setId(savedUser.getId());
         userResponse.setUsername(savedUser.getUsername());
         userResponse.setEmail(savedUser.getEmail());
-        userResponse.setRole(savedUser.getRole());
+        userResponse.setRole(savedUser.getRole().toUpperCase());
         return userResponse;
     }
 
