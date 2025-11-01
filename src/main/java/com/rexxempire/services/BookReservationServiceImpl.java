@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class BookReservationServiceImpl implements BookReservationService{
@@ -39,5 +40,9 @@ public class BookReservationServiceImpl implements BookReservationService{
                 .orElseThrow(() -> new IllegalArgumentException("No active reservation record found for this book and user"));
         bookReservation.setStatus(ReservationStatus.CANCELED);
         return bookReservationRepository.save(bookReservation);
+    }
+
+    public List<BookReservation> getReservationsByUser(String userId) {
+        return bookReservationRepository.findByUserId(userId);
     }
 }
