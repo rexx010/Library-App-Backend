@@ -1,6 +1,7 @@
 package com.rexxempire.dtos.responses;
 
 import com.rexxempire.data.models.Author;
+import com.rexxempire.data.models.Status;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -11,7 +12,11 @@ public class BookResponse {
     private String title;
     private String isbn;
     private String publishedDate;
-    private Author authorName;
+    private String authorName;
+    private String bookCoverUrl;
+    private Status status;
+    private String bio;
+    private String email;
     private String genre;
     private int totalCopies;
     private int availableCopies;
