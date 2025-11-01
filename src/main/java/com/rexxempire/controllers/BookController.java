@@ -17,13 +17,13 @@ public class BookController {
     @Autowired
     private BookServiceImpl bookService;
 
-    @PostMapping("/{authorId}")
-    public ResponseEntity<?> addBook(@Valid @RequestBody BookRequest bookRequest, @PathVariable("authorId") String authorId, HttpSession session){
+    @PostMapping("/add-book")
+    public ResponseEntity<?> addBook(@Valid @RequestBody BookRequest bookRequest, HttpSession session){
         String role = (String) session.getAttribute("role");
         if(role == null || !role.equalsIgnoreCase("ADMIN")){
             return ResponseEntity.status(403).body("No access granted: Only ADMIN can add books");
         }
-        return ResponseEntity.ok(bookService.addBook(authorId,bookRequest));
+        return ResponseEntity.ok(bookService.addBook(bookRequest));
     }
 
     @GetMapping
