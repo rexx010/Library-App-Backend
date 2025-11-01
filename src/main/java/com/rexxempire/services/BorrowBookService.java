@@ -8,4 +8,5 @@ public interface BorrowBookService {
     BorrowBook borrowBook(String userId, String bookId);
     List<BorrowBook> viewBorrowedBookByUserId(String userId);
     BorrowBook returnBook(String userId, String bookId);
+    void deleteBorrowRecord(String id);
 }
