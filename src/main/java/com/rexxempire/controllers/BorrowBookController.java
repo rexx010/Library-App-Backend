@@ -13,7 +13,7 @@ public class BorrowBookController {
     @Autowired
     private BorrowBookServiceImpl borrowBookService;
 
-    @GetMapping("/{bookId}")
+    @PostMapping("/{bookId}")
     public ResponseEntity<?> borrowBook(@PathVariable("bookId") String bookId, HttpSession session){
         String userId = (String) session.getAttribute("userId");
         if(userId == null){
@@ -23,7 +23,7 @@ public class BorrowBookController {
         return ResponseEntity.ok(borrowBook);
     }
 
-    @PostMapping("/borrowed")
+    @GetMapping("/borrowed")
     public ResponseEntity<Iterable<BorrowBook>> viewBorrowedBookByUserId(HttpSession session){
         String userId = (String) session.getAttribute("userId");
         if(userId == null){
@@ -32,7 +32,7 @@ public class BorrowBookController {
         return ResponseEntity.ok(borrowBookService.viewBorrowedBookByUserId(userId));
     }
     
-    @PostMapping("/{bookId}")
+    @PutMapping("/{bookId}")
     public ResponseEntity<BorrowBook> returnBook(@PathVariable("bookId") String bookId, HttpSession session) {
         String userId = (String) session.getAttribute("userId");
         if (userId == null) {
@@ -40,5 +40,15 @@ public class BorrowBookController {
         }
         BorrowBook record = borrowBookService.returnBook(userId, bookId);
         return ResponseEntity.ok(record);
+    }
+
+    @DeleteMapping("/{bookId}")
+    public ResponseEntity<?> deleteBorrowRecord(@PathVariable("bookId") String bookId, HttpSession session){
+        String userId = (String) session.getAttribute("userId");
+        if(userId == null){
+            return ResponseEntity.status(401).body("No user logged in");
+        }
+        borrowBookService.deleteBorrowRecord(   bookId);
+        return ResponseEntity.noContent().build();
     }
 }
