@@ -11,12 +11,15 @@ import java.time.LocalDate;
 public class Book {
     private String id;
     private String title;
-    @DBRef
-    private Author author;
+    private String authorName;
+    private String bookCoverUrl;
+    private String bio;
+    private String email;
     private String isbn;
     private LocalDate publishedDate;
     private String genre;
     private int totalCopies;
     private int availableCopies;
+    private Status status;
 
 }
