@@ -2,6 +2,7 @@ package com.rexxempire.services;
 
 import com.rexxempire.data.models.Author;
 import com.rexxempire.data.models.Book;
+import com.rexxempire.data.models.Status;
 import com.rexxempire.data.repositories.AuthorRepository;
 import com.rexxempire.data.repositories.BookRepository;
 import com.rexxempire.dtos.requests.BookRequest;
@@ -19,17 +20,19 @@ public class BookServiceImpl implements BookService{
     @Autowired
     private AuthorRepository authorRepository;
 
-    public BookResponse addBook(String authorId, BookRequest bookRequest){
-        Author author = authorRepository.findById(authorId)
-                .orElseThrow(() -> new RuntimeException("Author not found with id : " + authorId));
+    public BookResponse addBook(BookRequest bookRequest){
         Book book = new Book();
         book.setIsbn(bookRequest.getIsbn());
         book.setTitle(bookRequest.getTitle());
-        book.setAuthor(author);
+        book.setAuthorName(bookRequest.getAuthorName());
+        book.setBookCoverUrl(bookRequest.getBookCoverUrl());
+        book.setBio(bookRequest.getBio());
+        book.setEmail(bookRequest.getEmail());
         book.setGenre(bookRequest.getGenre());
         book.setPublishedDate(bookRequest.getPublishedDate());
         book.setTotalCopies(bookRequest.getTotalCopies());
-        book.setAvailableCopies(bookRequest.getAvailableCopies());
+        book.setAvailableCopies(bookRequest.getTotalCopies());
+        book.setStatus(Status.AVAILABLE);
         bookRepository.save(book);
 
         BookResponse bookResponse = new BookResponse();
@@ -37,8 +40,12 @@ public class BookServiceImpl implements BookService{
         bookResponse.setTitle(book.getTitle());
         bookResponse.setIsbn(book.getIsbn());
         bookResponse.setPublishedDate(book.getPublishedDate().toString());
-        bookResponse.setAuthorName(book.getAuthor());
+        bookResponse.setAuthorName(book.getAuthorName());
+        bookResponse.setBookCoverUrl(book.getBookCoverUrl());
+        bookResponse.setBio(book.getBio());
+        bookResponse.setEmail(book.getEmail());
         bookResponse.setGenre(book.getGenre());
+        bookResponse.setStatus(book.getStatus());
         bookResponse.setTotalCopies(book.getTotalCopies());
         bookResponse.setAvailableCopies(book.getAvailableCopies());
 
