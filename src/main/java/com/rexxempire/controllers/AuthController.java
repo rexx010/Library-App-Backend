@@ -1,6 +1,7 @@
 package com.rexxempire.controllers;
 
 
+import com.rexxempire.data.models.User;
 import com.rexxempire.dtos.requests.LoginRequest;
 import com.rexxempire.dtos.requests.UserRequest;
 import com.rexxempire.services.UserServiceImp;
@@ -27,20 +28,16 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest, HttpSession session) {
-        return userService.login(loginRequest)
-                .map(user -> {
-                    session.setAttribute("userId", user.getId());
-                    session.setAttribute("role", user.getRole());
-                    Map<String, String> userMap = new HashMap<>();
-                    userMap.put("id", user.getId().toString());
-                    userMap.put("username", user.getUsername().toString());
-                    userMap.put("role", user.getRole().toString());
-                    return ResponseEntity.ok().header("Authorization", session.getId()).body(userMap);
-                })
-                .orElseGet(() -> {Map<String, String> errorMap = new HashMap<>();
-                    errorMap.put("error", "Invalid credentials");
-                    return ResponseEntity.status(401).body(errorMap);
-                });
+        User user = userService.login(loginRequest); // No longer Optional
+
+        session.setAttribute("userId", user.getId());
+        session.setAttribute("username", user.getUsername());
+
+        Map<String, String> userMap = new HashMap<>();
+        userMap.put("id", user.getId().toString());
+        userMap.put("username", user.getUsername());
+
+        return ResponseEntity.ok().header("Authorization", session.getId()).body(userMap);
     }
 
     @GetMapping("/me")
