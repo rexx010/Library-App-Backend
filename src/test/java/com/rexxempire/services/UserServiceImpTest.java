@@ -23,12 +23,12 @@ public class UserServiceImpTest {
        userRepository.deleteAll();
     }
 
-    @Test
-    public void registerUser() {
-        UserRequest userRequest = new UserRequest();
-        userService.registerUser(userRequest);
-        assertEquals(1,userRepository.count());
-    }
+//    @Test
+//    public void registerUser() {
+//        UserRequest userRequest = new UserRequest();
+//        userService.registerUser(userRequest);
+//        assertEquals(1,userRepository.count());
+//    }
 
     @Test
     public void registerOneUser_UserCountIsOne(){
