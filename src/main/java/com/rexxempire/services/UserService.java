@@ -9,6 +9,6 @@ import java.util.Optional;
 
 public interface UserService {
     UserResponse registerUser(UserRequest userRequest);
-    Optional<User> login(LoginRequest loginRequest);
+    User login(LoginRequest loginRequest);
     Optional<User> findById(String id);
 }
