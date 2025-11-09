@@ -20,7 +20,7 @@ public class BookController {
     @PostMapping("/add-book")
     public ResponseEntity<?> addBook(@Valid @RequestBody BookRequest bookRequest, HttpSession session){
         String role = (String) session.getAttribute("role");
-        if(role == null || !role.equalsIgnoreCase("ADMIN")){
+        if(role == null){
             return ResponseEntity.status(403).body("No access granted: Only ADMIN can add books");
         }
         return ResponseEntity.ok(bookService.addBook(bookRequest));
