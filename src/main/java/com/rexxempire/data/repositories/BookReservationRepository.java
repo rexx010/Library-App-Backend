@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BookReservationRepository extends MongoRepository <BookReservation, String>{
-    Optional<BookReservation> findByUserIdAndBookIdAndStatus(String userId, String bookId, ReservationStatus reservationStatus);
-
+    Optional<BookReservation> findByUser_IdAndBook_IdAndStatus(String userId, String bookId, ReservationStatus status);
     List<BookReservation> findByUserId(String userId);
 }

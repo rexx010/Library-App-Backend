@@ -36,7 +36,8 @@ public class BookReservationServiceImpl implements BookReservationService{
     }
 
     public BookReservation deleteReservation(String userId, String bookId){
-        BookReservation bookReservation = bookReservationRepository.findByUserIdAndBookIdAndStatus(userId, bookId, ReservationStatus.ACTIVE)
+        BookReservation bookReservation = bookReservationRepository
+                .findByUser_IdAndBook_IdAndStatus(userId, bookId, ReservationStatus.ACTIVE) // Changed here
                 .orElseThrow(() -> new IllegalArgumentException("No active reservation record found for this book and user"));
         bookReservation.setStatus(ReservationStatus.CANCELED);
         return bookReservationRepository.save(bookReservation);
