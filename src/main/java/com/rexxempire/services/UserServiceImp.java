@@ -35,13 +35,13 @@ public class UserServiceImp implements UserService{
         user.setUsername(userRequest.getUsername());
         user.setEmail(userRequest.getEmail());
         user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-        user.setRole(userRequest.getRole());
+        user.setRole(userRequest.getRole().toUpperCase());
         User savedUser = userRepository.save(user);
         UserResponse userResponse = new UserResponse();
         userResponse.setId(savedUser.getId());
         userResponse.setUsername(savedUser.getUsername());
         userResponse.setEmail(savedUser.getEmail());
-        userResponse.setRole(savedUser.getRole().toUpperCase());
+        userResponse.setRole(savedUser.getRole());
         return userResponse;
     }
 
