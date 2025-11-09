@@ -32,10 +32,12 @@ public class AuthController {
 
         session.setAttribute("userId", user.getId());
         session.setAttribute("username", user.getUsername());
+        session.setAttribute("role", user.getRole());
 
         Map<String, String> userMap = new HashMap<>();
         userMap.put("id", user.getId().toString());
         userMap.put("username", user.getUsername());
+        userMap.put("role", user.getRole());
 
         return ResponseEntity.ok().header("Authorization", session.getId()).body(userMap);
     }
