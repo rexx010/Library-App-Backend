@@ -16,7 +16,9 @@ public class WebConfig {
                 registry.addMapping("/**")
                         .allowedOrigins("http://localhost:5173", "https://learninghob.netlify.app")
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
-                        .allowCredentials(true);
+                        .allowCredentials(true)
+                        .allowedHeaders("*")
+                        .exposedHeaders("Authorization", "Content-Type", "X-Session-Id","Set-Cookie");
             }
         };
     }
