@@ -1,6 +1,7 @@
 package com.rexxempire.data.repositories;
 
 import com.rexxempire.data.models.BookReservation;
+import com.rexxempire.data.models.BorrowBook;
 import com.rexxempire.data.models.ReservationStatus;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
@@ -8,6 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BookReservationRepository extends MongoRepository <BookReservation, String>{
-    Optional<BookReservation> findByUser_IdAndBook_IdAndStatus(String userId, String bookId, ReservationStatus status);
+    Optional<BookReservation> findByUserIdAndBookIdAndStatus(String userId, String bookId, ReservationStatus reservationStatus);
+
     List<BookReservation> findByUserId(String userId);
+    Optional<BookReservation> findFirstByUserIdAndBookIdAndStatus(String userId, String bookId, ReservationStatus reservationStatus);
 }
